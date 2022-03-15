@@ -3,12 +3,47 @@
  */
 package simple;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.zip.Inflater;
+
+import javax.swing.event.DocumentEvent;
+
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import com.openhtmltopdf.svgsupport.BatikSVGDrawer;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Entities.EscapeMode;
+
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
+    public static void main(String[] args) throws Exception {
+        
+        File inFile = htmlToXhtml(new File("D:\\in.html").toPath());
+        
+        try (OutputStream os = new FileOutputStream("D:\\out.pdf")) {
+            PdfRendererBuilder builder = new PdfRendererBuilder();
+            builder.useFastMode();
+            builder.withUri(inFile.toURI().toURL().toExternalForm());
+            builder.useSVGDrawer(new BatikSVGDrawer());
+            builder.toStream(os);
+            builder.run();
+        }
     }
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+    public static File htmlToXhtml(final Path htmlPath) throws IOException {
+        String htmlToBeParsed = Files.readString(htmlPath);
+        final Document document = Jsoup.parseBodyFragment(htmlToBeParsed);
+        document.outputSettings().escapeMode(EscapeMode.xhtml);
+        FileWriter fw = new FileWriter("D:\\inXhtml.xml");
+        fw.write(document.html());
+        fw.close();
+        return new File("D:\\inXhtml.xml");
     }
 }
