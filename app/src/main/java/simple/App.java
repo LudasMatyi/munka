@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.zip.Inflater;
-
-import javax.swing.event.DocumentEvent;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.openhtmltopdf.svgsupport.BatikSVGDrawer;
@@ -41,9 +38,9 @@ public class App {
         String htmlToBeParsed = Files.readString(htmlPath);
         final Document document = Jsoup.parseBodyFragment(htmlToBeParsed);
         document.outputSettings().escapeMode(EscapeMode.xhtml);
-        FileWriter fw = new FileWriter("D:\\inXhtml.xml");
+        FileWriter fw = new FileWriter("D:\\inXml.xml");
         fw.write(document.html());
         fw.close();
-        return new File("D:\\inXhtml.xml");
+        return new File("D:\\inXml.xml");
     }
 }
