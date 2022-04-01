@@ -22,9 +22,9 @@ import org.jsoup.nodes.Entities.EscapeMode;
 public class App {
     public static void main(String[] args) throws Exception {
         
-        File inFile = htmlToXhtml(new File("D:\\in.html").toPath());
+        File inFile = htmlToXhtml(new File("in.html").toPath());
         
-        try (OutputStream os = new FileOutputStream("D:\\out.pdf")) {
+        try (OutputStream os = new FileOutputStream("out.pdf")) {
             PdfRendererBuilder builder = new PdfRendererBuilder();
             builder.useFastMode();
             builder.withUri(inFile.toURI().toURL().toExternalForm());
@@ -38,9 +38,9 @@ public class App {
         String htmlToBeParsed = Files.readString(htmlPath);
         final Document document = Jsoup.parseBodyFragment(htmlToBeParsed);
         document.outputSettings().escapeMode(EscapeMode.xhtml);
-        FileWriter fw = new FileWriter("D:\\inXml.xml");
+        FileWriter fw = new FileWriter("inXml.xml");
         fw.write(document.html());
         fw.close();
-        return new File("D:\\inXml.xml");
+        return new File("inXml.xml");
     }
 }
